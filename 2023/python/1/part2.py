@@ -1,71 +1,25 @@
-file = open("input.txt", "r")
-lines = file.readlines()
+import re
 
-def is_number(string):
-    match string:
-        case "zero": return 0
-        case "one": return 1
-        case "two": return 2
-        case "three": return 3
-        case "four": return 4
-        case "five": return 5
-        case "six": return 6
-        case "seven": return 7
-        case "eight": return 8
-        case "nine": return 9
+lines = open("input.txt", "r").readlines()
 
-def is_number_reversed(string):
-    match string:
-        case "orez": return 0
-        case "eno": return 1
-        case "owt": return 2
-        case "eerht": return 3
-        case "ruof": return 4
-        case "evif": return 5
-        case "xis": return 6
-        case "neves": return 7
-        case "thgie": return 8
-        case "enin": return 9
+translations = {
+    "one": "1", "two": "2", "three": "3",
+    "four": "4", "five": "5", "six": "6",
+    "seven": "7", "eight": "8", "nine": "9"
+}
+translations_reverse = {k[::-1]: v for k, v in translations.items()}
 
+pattern = re.compile(r"|".join(translations.keys()))
+pattern_reverse = re.compile(r"|".join(translations_reverse.keys()))
 
-total = []
-total2 = [] 
+num = 0
+
 for line in lines:
-    line_rev = line[::-1]
-    for i in range(len(line)):
-        if line[i].isnumeric():
-            total.append(line[i])
-            break
-        try: 
-            if is_number(line[i:i+5]):
-                total.append(str(is_number(line[i:i+5])))
-                break
-            if is_number(line[i:i+4]):
-                total.append(str(is_number(line[i:i+4])))
-                break
-            if is_number(line[i:i+3]):
-                total.append(str(is_number(line[i:i+3])))
-                break
-        except: pass
-    for i in range(len(line_rev)):
-        if line_rev[i].isnumeric():
-            total2.append(line_rev[i])
-            break
-        try: 
-            if is_number_reversed(line_rev[i:i+5]):
-                total2.append(str(is_number_reversed(line_rev[i:i+5])))
-                break
-            if is_number_reversed(line_rev[i:i+4]):
-                total2.append(str(is_number_reversed(line_rev[i:i+4])))
-                break
-            if is_number_reversed(line_rev[i:i+3]):
-                total2.append(str(is_number_reversed(line_rev[i:i+3])))
-                break
-        except: pass
-    
-total2.reverse()
-for i in range(len(total)):
-    total[i] += total2[i]
-total = [int(x) for x in total]
+    translation = lambda x: translations[x.group()]
+    first = pattern.sub(translation, line, 1)
 
-print(sum(total))
+    translation_reverse = lambda x: translations_reverse[x.group()]
+    last = pattern_reverse.sub(translation_reverse, line[::-1], 1)
+    num += int(re.search(r"\d", first).group() \
+        + re.search(r"\d", last).group())
+print(num)
