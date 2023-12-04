@@ -1,5 +1,6 @@
-import re
-
 lines = open("input.txt", "r").readlines()
-print(sum([int(re.search(r"\d", line).group() \
-    + re.search(r"\d", line[::-1]).group()) for line in lines]))
+num = 0
+for line in lines:
+    digits = [char for char in line if char.isdigit()]
+    num += int(digits[0] + digits[-1])
+print(num)
