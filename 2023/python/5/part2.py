@@ -17,7 +17,6 @@ def format_input():
     return seeds, seeds_map
 
 def map_ranges(seed, source):
-    assert seed[0] <= seed[1]
     if seed[0] >= source[0] and seed[1] <= source[1]:
         return [[], seed, []]
     if seed[0] < source[0] and seed[1] > source[1]:
