@@ -1,33 +1,20 @@
-import math
+from math import lcm
 
-def get_steps(start):
+def path(current, cycle, network):
     steps = 0
-    for i in inst:
-        if i == "L": start = maps[start][0]
-        elif i == "R": start = maps[start][1]
+    while current[2] != "Z":
+        if cycle[0] == "L": current = network[current][0]
+        else: current = network[current][1]
+        cycle = cycle[1:] + cycle[0]
         steps += 1
-        if start[2] == "Z": return steps
+    return steps
 
-lines = open("input.txt", "r").readlines()
+cycle, _, *instructions = open("input.txt", "r").read().splitlines()
 
-inst = ""
-maps = {}
+network = {}
+for i in range(len(instructions)):
+    left, right = instructions[i].split(" = ")
+    network[left] = right[1:-1].split(", ")
 
-for line in lines:
-    line = line.split()
-    if not "=" in line and line != []:
-        inst = line[0] * 1000
-    elif line == []: continue
-    else:
-        maps[line[0]] = (line[2][1:][:3], line[3][:3])
-
-starts = []
-for i in maps:
-    if i[2] == "A": starts.append(i)
-
-total = []
-for s in starts:
-    total.append(get_steps(s))
-
-lcm = math.lcm(*total)
-print(lcm)
+paths = [path(i, cycle, network) for i in network if i[2] == "A"]
+print(lcm(*paths))

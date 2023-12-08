@@ -1,22 +1,15 @@
-lines = open("input.txt", "r").readlines()
+cycle, _, *instructions = open("input.txt", "r").read().splitlines()
 
-inst = ""
-maps = {}
-
-for line in lines:
-    line = line.split()
-    if not "=" in line and line != []:
-        inst = line[0] * 10000
-    elif line == []: continue
-    else:
-        maps[line[0]] = (line[2][1:][:3], line[3][:3])
+network = {}
+for i in range(len(instructions)):
+    left, right = instructions[i].split(" = ")
+    network[left] = right[1:-1].split(", ")
 
 steps = 0
-cur = "AAA"
-for i in inst:
-    if i == "L": cur = maps[cur][0]
-    elif i == "R": cur = maps[cur][1]
+current = "AAA"
+while current != "ZZZ":
+    if cycle[0] == "L": current = network[current][0]
+    else: current = network[current][1]
+    cycle = cycle[1:] + cycle[0]
     steps += 1
-    if cur == "ZZZ": break
 print(steps)
-
