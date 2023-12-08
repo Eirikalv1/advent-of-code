@@ -6,8 +6,7 @@ def get_steps(start):
         if i == "L": start = maps[start][0]
         elif i == "R": start = maps[start][1]
         steps += 1
-        if start in ends: break
-    return steps
+        if start[2] == "Z": return steps
 
 lines = open("input.txt", "r").readlines()
 
@@ -22,10 +21,9 @@ for line in lines:
     else:
         maps[line[0]] = (line[2][1:][:3], line[3][:3])
 
-starts, ends = [], []
+starts = []
 for i in maps:
     if i[2] == "A": starts.append(i)
-    if i[2] == "Z": ends.append(i)
 
 total = []
 for s in starts:
