@@ -1,9 +1,10 @@
 cycle, _, *instructions = open("input.txt", "r").read().splitlines()
 
 network = {}
-for i in range(len(instructions)):
-    left, right = instructions[i].split(" = ")
+for instruction in instructions:
+    left, right = instruction.split(" = ")
     network[left] = right[1:-1].split(", ")
+
 
 steps = 0
 current = "AAA"
