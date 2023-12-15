@@ -1,3 +1,11 @@
+/**
+ *  Advent Of Code 2023 Day 14 Part 1
+ *
+ *  @file       part1.c
+    @author     Eirikalv1
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,6 +24,9 @@ int     nRowsInFile(FILE* file);
 void    readFile();
 
 
+/**
+ *  Main Program
+ */
 int main() {
     readFile();
 
@@ -31,6 +42,11 @@ int main() {
 }
 
 
+/**
+ *  Make all rocks fall
+ * 
+ *  @see    fallrock(...)
+*/
 void fallAllRocks() {
     for (int y = 0; y < nLines; y++) {
         for (int x = 0; x < lineLen - 2; x++) {
@@ -40,6 +56,12 @@ void fallAllRocks() {
 }
 
 
+/**
+ *  Logic for falling rock
+ *
+ *  @param  x   - x coord in grid
+ *  @param  y   - y coord in grid
+*/
 void fallRock(int x, int y) {
     if (grid[y][x] != 'O') return;
 
@@ -56,6 +78,11 @@ void fallRock(int x, int y) {
 }
 
 
+/**
+ *  Calculate score for each rock
+ *
+ *  @return Calculated score
+ */
 int getScore() {
     int score = 0;
 
@@ -69,6 +96,9 @@ int getScore() {
 }
 
 
+/**
+ *  Allocate memory for each row and column in grid
+ */
 void memAllocForFile() {
     grid = (char**) malloc(nLines * sizeof(char*));
     if (!grid) exit(1);
@@ -80,6 +110,9 @@ void memAllocForFile() {
 }
 
 
+/**
+ *  Free grid
+ */
 void memDeAllocForFile() {
     for (int i = 0; i < nLines; i++) {
         free(grid[i]);
@@ -89,6 +122,13 @@ void memDeAllocForFile() {
 }
 
 
+/**
+ *  Find amount of lines in file
+ *
+ *  @param  file    - input.txt
+ *
+ *  @return Amount of lines
+ */
 int nRowsInFile(FILE* file) {
     int count = 1;
 
@@ -102,6 +142,13 @@ int nRowsInFile(FILE* file) {
 }
 
 
+/**
+ *  Reads input.txt
+ *
+ *  @see    memAllocForFile(...)
+ *  @see    nRowsInFile(...)
+ *  @see    rowLenInFile(...)
+ */
 void readFile() {
     FILE* file = fopen("input.txt", "r");
     if (!file) exit(1);
@@ -121,6 +168,13 @@ void readFile() {
 }
 
 
+/**
+ *  Find length of each line
+ *
+ *  @param  file    - input.txt
+ *
+ *  @return Amount of chars in line
+ */
 int rowLenInFile(FILE* file) {
     int count = 2;
     while (fgetc(file) != '\n') count++;
